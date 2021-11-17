@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="../plugins/images/favicon.png">
+    <title>Pixel Admin - Responsive Admin Dashboard Template build with Twitter Bootstrap</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="../static/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{../static/bootstrap/dist/css/bootstrap.min.css}">
+    <!-- Menu CSS -->
+    <link href="../static/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet"
+          th:href="@{../static/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css}">
+    <!-- animation CSS -->
+    <link href="../static/css/animate.css" rel="stylesheet" th:href="@{../static/css/animate.css}">
+    <!-- Custom CSS -->
+    <link href="../static/css/style.css" rel="stylesheet" th:href="@{../static/css/style.css}">
+    <!-- color CSS -->
+    <link href="../static/css/colors/blue-dark.css" id="theme" rel="stylesheet"
+          th:href="@{../static/css/colors/blue-dark.css}">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<!-- Preloader -->
+<div class="preloader">
+    <div class="cssload-speeding-wheel"></div>
+</div>
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top m-b-0">
+        <div class="navbar-header"><a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)"
+                                      data-toggle="collapse" data-target=".navbar-collapse"><i
+                class="fa fa-bars"></i></a>
+            <div class="top-left-part"><a class="logo" href="index.html"><b><img
+                    src="../static/plugins/images/pixeladmin-logo.png"
+                    th:href="@{../static/static/plugins/images/pixeladmin-logo.png}" alt="home"/></b><span
+                    class="hidden-xs"><img src="../static/plugins/images/pixeladmin-text.png"
+                                           th:href="@{../static/plugins/images/pixeladmin-text.png}" alt="home"/></span></a>
+            </div>
+            <ul class="nav navbar-top-links navbar-left m-l-20 hidden-xs">
+                <li>
+                    <form role="search" class="app-search hidden-xs">
+                        <input type="text" placeholder="Search..." class="form-control"> <a href=""><i
+                            class="fa fa-search"></i></a>
+                    </form>
+                </li>
+            </ul>
+            <ul class="nav navbar-top-links navbar-right pull-right">
+                <li>
+                    <a class="profile-pic" href="#"> <img src="../static/plugins/images/users/varun.jpg"
+                                                          th:href="@{../static/plugins/images/users/varun.jpg}"
+                                                          alt="user-img" width="36" class="img-circle"><b
+                            class="hidden-xs">Steave</b> </a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-header -->
+        <!-- /.navbar-top-links -->
+        <!-- /.navbar-static-side -->
+    </nav>
+    <!-- Left navbar-header -->
+    <div class="navbar-default sidebar" role="navigation">
+        <div class="sidebar-nav navbar-collapse slimscrollsidebar">
+            <ul class="nav" id="side-menu">
+                <li style="padding: 10px 0 0;">
+                    <a th:href="@{/adminIndex}" class="waves-effect"><i class="fa fa-clock-o fa-fw" aria-hidden="true"></i><span class="hide-menu">首页</span></a>
+                </li>
+                <li>
+                    <a th:href="@{/admins/toStation}" class="waves-effect"><i class="fa fa-user fa-fw" aria-hidden="true"></i><span class="hide-menu">站点</span></a>
+                </li>
+                <li>
+                    <a th:href="@{/admins/selectAllStation}" class="waves-effect"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span class="hide-menu">查询站点</span></a>
+                </li>
+                <li>
+                    <a th:href="@{/admins/toUser}" class="waves-effect"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span class="hide-menu">用户管理</span></a>
+                </li>
+                <li>
+                    <a th:href="@{/admins/toRoadMap}" class="waves-effect"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span class="hide-menu">路线图</span></a>
+                </li>
+                <li>
+                    <a th:href="@{/admins/toTrain}" class="waves-effect"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span class="hide-menu">班次表</span></a>
+                </li>
+                <li>
+                    <a href="fontawesome.html" class="waves-effect"><i class="fa fa-font fa-fw" aria-hidden="true"></i><span class="hide-menu">Icons</span></a>
+                </li>
+
+                <!-- <li>
+                    <a href="map-google.html" class="waves-effect"><i class="fa fa-globe fa-fw" aria-hidden="true"></i><span class="hide-menu">Google Map</span></a>
+                </li> -->
+                <!-- <li>
+                    <a href="blank.html" class="waves-effect"><i class="fa fa-columns fa-fw" aria-hidden="true"></i><span class="hide-menu">Blank Page</span></a>
+                </li> -->
+                <li>
+                    <a href="404.html" class="waves-effect"><i class="fa fa-info-circle fa-fw" aria-hidden="true"></i><span class="hide-menu">Error 404</span></a>
+                </li>
+            </ul>
+            <div class="center p-20">
+                <span class="hide-menu"><a href="#" target="_blank"
+                                           class="btn btn-danger btn-block btn-rounded waves-effect waves-light">Upgrade to Pro</a></span>
+            </div>
+        </div>
+    </div>
+    <!-- Left navbar-header end -->
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h4 class="page-title">Profile page</h4></div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12"><a href="#"
+                                                                     class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Upgrade
+                    to Pro</a>
+                    <ol class="breadcrumb">
+                        <li><a href="#">Dashboard</a></li>
+                        <li class="active">Profile page</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+            <!-- .row -->
+            <!-- 用户 -->
+            <div class="row">
+                <div class="col-md-8 col-xs-12">
+                    <div class="white-box">
+                        <div class="form-group">
+                            <!--                            <label class="col-md-12">站点名</label>-->
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                        data-target="#addRoadMapModal">
+                                    添加
+                                </button>
+                            </div>
+
+                            <table class="table table-hover">
+                                <tr>
+                                    <th>id</th>
+                                    <th>开始站点</th>
+                                    <th>最终站点</th>
+                                    <th>操作</th>
+                                </tr>
+                                <tr th:each="roadMaps: ${pageInfo.list}">
+                                    <td th:text="${roadMaps.id}"></td>
+                                    <td th:text="${roadMaps.startStation}"></td>
+                                    <td th:text="${roadMaps.endStation}"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#updateRoadMapModal" th:data-roadid="${roadMaps.id}">
+                                            修改
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#deleteRoadMapModal" th:onclick="getRoadMapId([[${roadMaps.id}]])">
+                                            删除
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div>
+            <p>当前 <span th:text="${pageInfo.pageNum}"></span> 页,总 <span th:text="${pageInfo.pages}"></span> 页,共 <span th:text="${pageInfo.total}"></span> 条记录</p>
+            <a th:href="@{/admins/toRoadMap}">首页</a>
+            <a th:href="@{/admins/toRoadMap(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1)}">上一页</a>
+            <a th:href="@{/admins/toRoadMap(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages})}">下一页</a>
+            <a th:href="@{/admins/toRoadMap(pageNum=${pageInfo.pages})}">尾页</a>
+
+            <!-- /.container-fluid -->
+            <footer class="footer text-center"> 2017 &copy; Pixel Admin brought to you by wrappixel - More Templates <a
+                    href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a
+                    href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></footer>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+
+
+    <!-- 模态框--添加 -->
+    <div class="modal fade" id="addRoadMapModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel02">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel02">添加路线图</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="rStartStationSelect" class="control-label">开始站点:</label>
+                        <select id="rStartStationSelect">
+                            <option th:each="station : ${addStationList}" th:text="${station.name}" id="rStartStation"
+                                    th:value="${station.name}"></option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="rEndStationSelect" class="control-label">结束站点:</label>
+                        <select id="rEndStationSelect">
+                            <option th:each="station : ${addStationList}" th:text="${station.name}" id="rEndStation"
+                                    th:value="${station.name}"></option>
+                        </select>
+                        <!-- <input type="text" class="form-control" id="rEndStation" name="rEndStation" th:name="rEndStation"/>-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="addRoadMapBtn">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模态框--修改 -->
+    <div class="modal fade" id="updateRoadMapModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel03">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel03">修改路线图</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="rid" disabled/>
+                    <div class="form-group">
+                        <label for="rsstionSelect" class="control-label">开始站点:</label>
+                        <select id="rsstionSelect">
+                            <option selected>请选择</option>
+                            <option id="rsstion" th:each="stations: ${addStationList}" th:value="${stations.name}"
+                                    th:text="${stations.name}"></option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="resSelect" class="control-label">结束站点:</label>
+                        <select id="resSelect">
+                            <option selected>请选择</option>
+                            <option id="res" th:each="road: ${addStationList}" th:value="${road.name}"
+                                    th:text="${road.name}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="updateRoadMapBtn">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模态框--删除 -->
+    <div class="modal fade" id="deleteRoadMapModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel01">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel01">提示</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="deleteRoadMapId">
+                    <p>是否删除！！！</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="deleteRoadMapBtn">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- /#wrapper -->
+    <!-- jQuery -->
+    <script src="../static/plugins/bower_components/jquery/dist/jquery.min.js"
+            th:href="@{../static/plugins/bower_components/jquery/dist/jquery.min.js}"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../static/bootstrap/dist/js/bootstrap.min.js"
+            th:href="@{../static/bootstrap/dist/js/bootstrap.min.js}"></script>
+    <!-- Menu Plugin JavaScript -->
+    <script src="../static/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"
+            th:href="@{../static/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js}"></script>
+    <!--slimscroll JavaScript -->
+    <script src="../static/js/jquery.slimscroll.js" th:href="@{../static/js/jquery.slimscroll.js}"></script>
+    <!--Wave Effects -->
+    <script src="../static/js/waves.js" th:href="@{../static/js/waves.js}"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="../static/js/custom.min.js" th:href="@{../static/js/custom.min.js}"></script>
+</body>
+<script>
+
+    // 用于向模态框里传值
+    $('#updateRoadMapModal').on('show.bs.modal', function (event) {
+        let btn = $(event.relatedTarget)
+        let roadMapId = btn.data('roadid')
+        console.log(roadMapId)
+        let modal = $(this)
+
+        $.ajax({
+            url: '/admins/findRoadMap',
+            data: {roadMapId: roadMapId},
+            dataType: 'json',
+            type: 'get',
+            contentType: 'application/json',
+            success: function (data) {
+                modal.find(".modal-body #rsstionSelect").val(data.startStation)
+                modal.find(".modal-body #resSelect").val(data.endStation)
+                // modal.find(".modal-body #res").text(data.endStation)
+                modal.find(".modal-body #rid").val(data.id)
+                // console.log(this.data.id)
+            },
+            error: function (data) {
+                console.log("错误")
+            }
+        })
+    })
+
+    $('#addRoadMapBtn').click(function () {
+        let rStartStation = $('#rStartStationSelect option:selected').val()
+        let rEndStation = $('#rEndStationSelect option:selected').val()
+        $.ajax({
+            url: '/admins/addRoadMap',
+            type: 'post',
+            data: {startStation: rStartStation, endStation: rEndStation},
+            dataType: 'json',
+            success: function (data) {
+                if (data === 2) {
+                    alert("添加成功")
+                    flushOption()
+                    $("#addRoadMapModal").modal('hide')
+                } else if (data === 1){
+                    alert("此路线图已存在")
+                    flushOption()
+                    $("#addRoadMapModal").modal('hide')
+                } else {
+                    alert("添加失败")
+                }
+            },
+            error: function (data) {
+                alert("添加失败")
+            }
+        })
+    })
+
+    // 当点击保存按钮是，往后台发送修改后的路线图信息
+    $('#updateRoadMapBtn').click(function () {
+        let roadMapId = $('#rid').val()
+        let rStartStation = $('#rsstionSelect option:selected').val()
+        let rEndStation = $('#resSelect option:selected').val()
+        console.log(roadMapId)
+        console.log(rStartStation)
+        console.log(rEndStation)
+        $.ajax({
+            url: '/admins/updateRoadMap',
+            type: 'put',
+            data: {
+                roadId: roadMapId,
+                startStation: rStartStation,
+                endStation: rEndStation
+            },
+            dataType: 'json',
+            success: function (flag) {
+                if (flag === 2) {
+                    alert('修改成功')
+                    flushOption()
+                    $('#updateRoadMapModal').modal('hide')
+                    console.log(flag)
+                } else if (flag === 1){
+                    alert('修改失败，已存在相同的站点')
+                } else {
+                    alert('修改失败')
+                }
+            },
+            error: function (data) {
+                alert("错误")
+            }
+        })
+    })
+
+    // 在更新完用户操作后，查询全部用户并刷新
+    function flushOption() {
+        $.ajax({
+            url: '/admins/toUser',
+            success: function (msg) {
+                // 刷新页面
+                window.location.reload()
+            },
+            error: function (data) {
+                alert("错误")
+            }
+        })
+    }
+
+    function getRoadMapId(roadMapId) {
+        $('#deleteRoadMapId').val(roadMapId)
+    }
+
+    // 实现删除站点功能并把整个页面刷新
+    $('#deleteRoadMapBtn').click(function () {
+        let id = $('#deleteRoadMapId').val()
+        console.log(id)
+        $.ajax({
+            url: '/admins/deleteRoadMap',
+            data: {roadMapId: id},
+            dataType: 'json',
+            success: function (data) {
+                if (data === 2){
+                    alert("删除成功")
+                    flushOption()
+                    $('#deleteUserModal').modal('hide')
+                } else if (data === 0){
+                    alert("删除失败")
+                }
+            }
+        })
+    })
+</script>
+
+</html>

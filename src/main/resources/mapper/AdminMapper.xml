@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="personal.ch.trainbookingsystem.repository.AdminRepository">
+    <!--    站点操作-->
+    <insert id="addStation" parameterType="string">
+        insert into train_booking_system.station(name)
+        values (#{stationName})
+    </insert>
+    <update id="updateStation">
+        update train_booking_system.station
+        set name = #{stationName}
+        where id = #{stationId}
+    </update>
+    <delete id="deleteSingleStation" parameterType="long">
+        delete
+        from train_booking_system.station
+        where id = #{stationId}
+    </delete>
+    <select id="selectAllStation" resultType="personal.ch.trainbookingsystem.entity.Station">
+        select *
+        from train_booking_system.station
+    </select>
+    <select id="selectSingleStation" resultType="personal.ch.trainbookingsystem.entity.Station">
+        select *
+        from train_booking_system.station
+        where id = #{stationId}
+    </select>
+
+
+    <!--    <resultMap id="usersRoleMap" type="personal.ch.trainbookingsystem.entity.Users">-->
+    <!--        <id property="id" column="id"/>-->
+    <!--        <result property="username" column="username"/>-->
+    <!--        <result property="name" column="name"/>-->
+    <!--        <association property="role" javaType="personal.ch.trainbookingsystem.entity.Role">-->
+    <!--&lt;!&ndash;            <id property="id" column="id"/>&ndash;&gt;-->
+    <!--            <result property="name" column="name"/>-->
+    <!--        </association>-->
+    <!--    </resultMap>-->
+
+    <!--    管理用户操作-->
+    <!--    查询全部用户信息-->
+    <select id="selectAllUsers" resultType="personal.ch.trainbookingsystem.entity.Users">
+        select u.id, username, password, name, id_number, phone, ru.role_id
+        from train_booking_system.users u
+                 left join train_booking_system.role_user ru on u.id = ru.user_id
+    </select>
+    <select id="selectSingleUserInfo" parameterType="long" resultType="personal.ch.trainbookingsystem.entity.Users">
+        select *
+        from train_booking_system.users u,
+             train_booking_system.role r,
+             train_booking_system.role_user ru
+        where u.id = #{userId}
+          and r.id = ru.role_id
+          and u.id = ru.user_id
+    </select>
+    <select id="selectSingleUsername" resultType="java.lang.Integer">
+        select *
+        from train_booking_system.users
+        where username = #{username}
+    </select>
+    <select id="findByUsername" resultType="personal.ch.trainbookingsystem.entity.Users">
+        select *
+        from train_booking_system.users
+        where username = #{username}
+    </select>
+    <update id="updateSingleUserInfo">
+        update train_booking_system.users
+        set username  = #{username},
+            name      = #{name},
+            id_number = #{idNumber},
+            phone     = #{phone}
+        where id = #{userId}
+    </update>
+    <update id="resetPassword">
+        update train_booking_system.users
+        set password = ''
+        where username = #{username}
+    </update>
+    <insert id="addUser">
+        insert into train_booking_system.users(username, password, name, id_number, phone)
+        VALUES (#{uname}, #{pwd}, #{names}, #{idNum}, #{telephone});
+    </insert>
+    <insert id="addRoleUser">
+        insert into train_booking_system.role_user(user_id, role_id)
+        VALUES (#{userId}, #{roleId})
+    </insert>
+    <delete id="deleteSingleUser" parameterType="long">
+        delete
+        from train_booking_system.users
+        where id = #{uid};
+
+        delete
+        from train_booking_system.role_user
+        where user_id = #{uid};
+    </delete>
+
+    <!--    路线图操作-->
+    <select id="selectAllRoadMap" resultType="personal.ch.trainbookingsystem.entity.RoadMap">
+        select *
+        from train_booking_system.roadmap
+    </select>
+    <select id="findRoadMapByStationNames" resultType="personal.ch.trainbookingsystem.entity.RoadMap">
+        select *
+        from train_booking_system.roadmap
+        where start_station = #{startStation}
+          and end_station = #{endStation}
+    </select>
+    <select id="findRoadMapByRoadMapId" resultType="personal.ch.trainbookingsystem.entity.RoadMap">
+        select *
+        from train_booking_system.roadmap
+        where id = #{roadMapId}
+    </select>
+    <insert id="addRoadMap">
+        insert into train_booking_system.roadmap(start_station, end_station)
+        VALUES (#{startStation}, #{endStation})
+    </insert>
+    <update id="updateRoadMap">
+        update train_booking_system.roadmap
+        set start_station = #{startStation},
+            end_station   = #{endStation}
+        where id = #{roadMapId}
+    </update>
+    <delete id="deleteRoadMap">
+        delete
+        from train_booking_system.roadmap
+        where id = #{roadMapId}
+    </delete>
+
+    <!--    班次操作-->
+    <!--    火车与路线图映射,全部查找时-->
+    <resultMap id="trainRoadMap" type="personal.ch.trainbookingsystem.entity.Train">
+        <id property="id" column="id"/>
+        <result property="trainNumber" column="train_number"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="price" column="price"/>
+        <result property="ticketNumber" column="ticket_number"/>
+        <result property="state" column="state"/>
+
+        <association property="roadMap" javaType="personal.ch.trainbookingsystem.entity.RoadMap">
+            <id property="id" column="id"/>
+            <result property="startStation" column="start_station"/>
+            <result property="endStation" column="end_station"/>
+        </association>
+    </resultMap>
+
+    <select id="selectAllTrain" resultType="personal.ch.trainbookingsystem.entity.Train" resultMap="trainRoadMap">
+        select t.id,
+               r.start_station,
+               r.end_station,
+               t.start_time,
+               t.end_time,
+               t.train_number,
+               t.price,
+               t.ticket_number,
+               t.state
+        from train_booking_system.train t,
+             train_booking_system.roadmap r,
+             train_booking_system.train_roadmap tr
+        where tr.train_id = t.id
+          and tr.roadmap_id = r.id
+    </select>
+    <!--    火车与路线图映射,查找单个班次通过火车id查找-->
+    <resultMap id="singleTrrainRoadMapByTrainId" type="personal.ch.trainbookingsystem.entity.Train">
+        <id property="id" column="id"/>
+        <result property="trainNumber" column="train_number"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="price" column="price"/>
+        <result property="ticketNumber" column="ticket_number"/>
+        <result property="state" column="state"/>
+
+        <association property="roadMap" javaType="personal.ch.trainbookingsystem.entity.RoadMap">
+            <id property="id" column="id"/>
+            <result property="startStation" column="start_station"/>
+            <result property="endStation" column="end_station"/>
+        </association>
+    </resultMap>
+    <select id="findTrainById" resultType="personal.ch.trainbookingsystem.entity.Train"
+            resultMap="singleTrrainRoadMapByTrainId">
+        select t.id,
+               r.id,
+               r.start_station,
+               r.end_station,
+               t.start_time,
+               t.end_time,
+               t.train_number,
+               t.price,
+               t.ticket_number,
+               t.state
+        from train_booking_system.train t,
+             train_booking_system.roadmap r,
+             train_booking_system.train_roadmap tr
+        where tr.train_id = t.id
+          and tr.roadmap_id = r.id
+          and t.id = #{id}
+    </select>
+    <!--    火车与路线图映射,查找一个班次通过火车班次查找-->
+    <resultMap id="singleTrrainRoadMapByTrainNumber" type="personal.ch.trainbookingsystem.entity.Train">
+        <id property="id" column="id"/>
+        <result property="trainNumber" column="train_number"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="price" column="price"/>
+        <result property="ticketNumber" column="ticket_number"/>
+        <result property="state" column="state"/>
+
+        <association property="roadMap" javaType="personal.ch.trainbookingsystem.entity.RoadMap">
+            <id property="id" column="id"/>
+            <result property="startStation" column="start_station"/>
+            <result property="endStation" column="end_station"/>
+        </association>
+    </resultMap>
+    <select id="findTrainByTrainNumber" resultType="personal.ch.trainbookingsystem.entity.Train"
+            resultMap="singleTrrainRoadMapByTrainNumber">
+        select t.id,
+               r.start_station,
+               r.end_station,
+               t.start_time,
+               t.end_time,
+               t.train_number,
+               t.price,
+               t.ticket_number,
+               t.state
+        from train_booking_system.train t,
+             train_booking_system.roadmap r,
+             train_booking_system.train_roadmap tr
+        where tr.train_id = t.id
+          and tr.roadmap_id = r.id
+          and t.train_number = #{trainNumber}
+    </select>
+    <select id="findTrainTableByTrainNumber" resultType="personal.ch.trainbookingsystem.entity.Train">
+        select *
+        from train_booking_system.train
+        where train_number = #{trainNumber}
+    </select>
+
+    <insert id="addTrain">
+        insert into train_booking_system.train(train_number, start_time, end_time, price, ticket_number, state)
+        VALUES (#{trainNumber}, #{startTime}, #{endTime}, #{price}, #{ticketNumber}, #{state})
+    </insert>
+    <insert id="addTrainRoadMap">
+        insert into train_booking_system.train_roadmap(train_id, roadmap_id)
+        values (#{trainId}, #{roadMapId});
+    </insert>
+    <update id="updateTrain">
+        update train_booking_system.train
+        set train_number  = #{trainNumber},
+            start_time    = #{startTime},
+            end_time      = #{endTime},
+            price         = #{price},
+            ticket_number = #{ticketNumber},
+            state         = #{state}
+        where id = #{trainId};
+
+        update train_booking_system.train_roadmap
+        set roadmap_id = #{roadMapId}
+        where train_id = #{trainId}
+    </update>
+    <!--    删除-->
+    <delete id="deleteTrainById">
+        delete
+        from train_booking_system.train
+        where id = #{id}
+    </delete>
+
+    <!--    <resultMap id="OrderMap" type="personal.ch.trainbookingsystem.entity.Order">-->
+    <!--        <id property="id" column="id"/>-->
+    <!--        <result property="orderCreateTime" column="order_create_time"/>-->
+    <!--        <result property="orderOperateTime" column="order_operate_time"/>-->
+    <!--        <result property="orderState" column="order_state"/>-->
+    <!--        <association property="train" javaType="personal.ch.trainbookingsystem.entity.Train">-->
+    <!--            <id property="id" column="id"/>-->
+    <!--            <result property="trainNumber" column="train_number"/>-->
+    <!--            <result property="ticketNumber" column="ticketNumber"/>-->
+    <!--        </association>-->
+    <!--        <association property="user" javaType="personal.ch.trainbookingsystem.entity.Users">-->
+    <!--            <id property="id" column="id"/>-->
+    <!--            <result property="username" column="username"/>-->
+    <!--            <result property="name" column="name"/>-->
+    <!--        </association>-->
+    <!--    </resultMap>-->
+    <!--查询所有订单-->
+    <select id="findAllOrder" resultType="personal.ch.trainbookingsystem.entity.Order">
+        select *
+        from train_booking_system.order
+        where order_state != 5
+    </select>
+    <!--    查找单个订单-->
+    <select id="findOrderById" resultType="personal.ch.trainbookingsystem.entity.Order">
+        select *
+        from train_booking_system.order
+        where id = #{orderId};
+    </select>
+    <!--    更新订单-->
+    <update id="updateOrder">
+        update train_booking_system.order
+        set order_state = #{state},
+        order_operate_time = #{updateTime},
+        order_admin_id = #{adminUsername}
+        where id = #{orderId}
+
+        <!--        <if test="state != null and state != ''">-->
+        <!--            set order_state = #{state},-->
+        <!--            <if test="updateTime != null and updateTime != ''">-->
+        <!--                order_operate_time = #{updateTime},-->
+        <!--            </if>-->
+        <!--            <if test="adminUsername != null and adminUsername != ''">-->
+        <!--                order_admin_id = #{adminUsername}-->
+        <!--            </if>-->
+        <!--            where id = #{orderId}-->
+        <!--        </if>-->
+    </update>
+    <!--    同意订单-->
+    <update id="agreeUpdateOrder">
+        update train_booking_system.order
+        set order_state        = 2,
+            order_operate_time = #{updateTime},
+            order_admin_id     = #{adminId}
+        where id = #{orderId}
+    </update>
+
+    <!--    软删除订单-->
+    <update id="deleteOrderById">
+        update train_booking_system.order
+        set order_state = 5
+        where id = #{orderId}
+    </update>
+
+</mapper>

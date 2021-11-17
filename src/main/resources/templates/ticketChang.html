@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"><!-- Thymeleaf提供的Spring Security标签支持 -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/favicon.ico">
+    <link rel="canonical" href="https://getbootstrap.com/docs/3.4/examples/navbar/">
+
+    <title>Navbar Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/assets/css/ie10-viewport-bug-workaround.css"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/examples/navbar/navbar.css"
+          rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/assets/js/ie8-responsive-file-warning.js"></script>
+    <![endif]-->
+    <script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">铁路售票系统</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- 我的信息 -->
+                    <li class="dropdown" sec:authorize="isAuthenticated()">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            <span sec:authentication="name"></span>
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/findUserTicketInfo}">我的火车票</a></li>
+                            <!--                            <li><a th:href="@{/userFindOrderInfo}">我的订单信息</a></li>-->
+                            <li role="separator" class="divider"></li>
+                            <!-- <li class="dropdown-header">Nav header</li> -->
+                            <li><a href="/toUserInfo">查看个人信息</a></li>
+                            <li><a th:href="@{/logout}">注销</a></li>
+                        </ul>
+                    </li>
+                    <li sec:authorize="!isAuthenticated()"><a th:href="@{/toLogin}">游客</a></li>
+
+                    <li><a th:href="@{/toLogin}">登录</a></li>
+                    <li><a th:href="@{/toRegister}">注册</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+    </nav>
+
+    <!-- Main component for a primary marketing message or call to action -->
+    <div class="jumbotron">
+
+        <!-- <h1>Navbar example</h1>
+         <p>This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
+         <p>
+           <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
+         </p> -->
+        <form action="/index" onsubmit="getPages()">
+            <label for="startTime">
+                <input type="date" id="startTime" name="startTime"/>
+            </label>
+            <button type="submit" class="btn btn-primary">查询</button>
+        </form>
+
+        <form action="/index" onsubmit="getPages()">
+            <input type="hidden" name="selectAll"/>
+            <button type="submit" class="btn btn-primary">查询全部</button>
+        </form>
+
+        <table class="table table-hover">
+            <tr>
+                <th>id</th>
+                <th>车次号</th>
+                <th>路线图</th>
+                <th>发车时间</th>
+                <th>到站时间</th>
+                <th>剩余票数</th>
+                <th>价格</th>
+                <!--            <th>状态</th>-->
+                <th>操作</th>
+            </tr>
+            <tr th:each="trains: ${trainList}">
+                <td th:text="${trains.id}"></td>
+                <td th:text="${trains.trainNumber}"></td>
+                <td>
+                    <span th:text="${trains.roadMap.startStation}"></span>
+                    <span>----></span>
+                    <span th:text="${trains.roadMap.endStation}"></span>
+                </td>
+                <td th:text="${#dates.format(trains.startTime)}"></td>
+                <td th:text="${#dates.format(trains.endTime)}"></td>
+                <td th:text="${trains.ticketNumber}"></td>
+                <td th:text="${trains.price}"></td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-sm"
+                            data-toggle="modal" data-target="#buyTicketModal" th:onclick="getTrainId([[${trains.id}]])">
+                        改签
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <!--        获得隐藏的总页数-->
+        <input type="hidden" id="pages" th:value="${pages}">
+
+        <nav aria-label="...">
+            <ul class="pagination" id="tabPage">
+                <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+            </ul>
+        </nav>
+
+    </div>
+
+</div> <!-- /container -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="buyTicketModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">改签</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="trainid"/>
+                <p>是否改签</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">否</button>
+                <button type="button" class="btn btn-primary" id="buyBtn">是</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"
+        integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+        crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/dist/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/assets/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+<script>
+    // 车次分页查询
+    function getPages() {
+        let pages = $("#pages").val();
+        for (let i = 0; i < pages; i++) {
+            $("#tabPage").append("<li><a href='/index?page=" + i + "' id='trainPage=" + (i + 1) + "'>" + (i + 1) + "</a></li>")
+        }
+        $("#tabPage").append("<li> <a href='#' aria-label='Next'> <span aria-hidden='true'>&raquo;</span> </a> </li>")
+    }
+
+    // 获得火车的id，模态框获得隐藏的id值
+    function getTrainId(id) {
+        $('#trainid').val(id)
+    }
+
+    // 实现改签功能并把整个页面刷新
+    $('#buyBtn').click(function () {
+        let id = $('#trainid').val()
+        console.log(id)
+        $.ajax({
+            url: '/updateTrainTicket',
+            type: 'post',
+            data: {trainId: id},
+            dataType: 'json',
+            success: function (data) {
+                if (data === 2) {
+                    alert("改签成功")
+                    // 刷新页面
+                    window.location.reload();
+                    $('#buyTicketModal').modal('hide')
+                } else {
+                    alert("改签失败")
+                }
+            },
+            error: function(){
+                alert("错误")
+            }
+        })
+    })
+
+    // 立即执行分页总页数
+    window.onload = getPages
+
+</script>
+</html>

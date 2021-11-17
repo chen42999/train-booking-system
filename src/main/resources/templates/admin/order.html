@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/plugins/images/favicon.png"
+          th:href="@{../static/plugins/images/favicon.png}">
+
+    <link href="../static/bootstrap/dist/css/bootstrap.min.css" type="text/css" rel="stylesheet"
+          th:href="@{../static/bootstrap/dist/css/bootstrap.min.css}">
+    <!-- Menu CSS -->
+    <link href="../static/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet"
+          type="text/css" th:href="@{../static/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css}">
+    <!-- toast CSS -->
+    <link href="../static/plugins/bower_components/toast-master/css/jquery.toast.css" rel="stylesheet" type="text/css"
+          th:href="@{../static/plugins/bower_components/toast-master/css/jquery.toast.css}">
+    <!-- animation CSS -->
+    <link href="../static/css/animate.css" rel="stylesheet" th:href="@{../static/css/animate.css}">
+    <!-- Custom CSS -->
+    <link href="../static/css/style.css" rel="stylesheet" th:href="@{../static/css/style.css}">
+    <!-- color CSS -->
+    <link href="../static/css/colors/blue-dark.css" id="theme" rel="stylesheet"
+          th:href="@{../static/css/colors/blue-dark.css}">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<!-- Preloader -->
+<div class="preloader">
+    <div class="cssload-speeding-wheel"></div>
+</div>
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top m-b-0">
+        <div class="navbar-header"><a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)"
+                                      data-toggle="collapse" data-target=".navbar-collapse"><i class="fa fa-bars
+"></i></a>
+            <div class="top-left-part"><a class="logo" href="index.html"><b><img
+                    src="../static/plugins/images/pixeladmin-logo.png"
+                    th:href="@{../static/plugins/images/pixeladmin-logo.png}" alt="home"/></b><span
+                    class="hidden-xs"><img src="../static/plugins/images/pixeladmin-text.png"
+                                           th:href="@{../static/plugins/images/pixeladmin-text.png}" alt="home"/></span></a>
+            </div>
+            <ul class="nav navbar-top-links navbar-left m-l-20 hidden-xs">
+                <li>
+                    <form role="search" class="app-search hidden-xs">
+                        <input type="text" placeholder="Search..." class="form-control"> <a href=""><i
+                            class="fa fa-search"></i></a>
+                    </form>
+                </li>
+            </ul>
+            <ul class="nav navbar-top-links navbar-right pull-right">
+                <li>
+                    <a class="profile-pic" href="#"> <img src="../static/plugins/images/users/varun.jpg"
+                                                          th:href="@{../static/plugins/images/users/varun.jpg}"
+                                                          alt="user-img" width="36" class="img-circle"><b
+                            class="hidden-xs">Steave</b> </a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-header -->
+        <!-- /.navbar-top-links -->
+        <!-- /.navbar-static-side -->
+    </nav>
+    <!-- Left navbar-header -->
+    <div class="navbar-default sidebar" role="navigation">
+        <div class="sidebar-nav navbar-collapse slimscrollsidebar">
+            <ul class="nav" id="side-menu">
+                <li style="padding: 10px 0 0;">
+                    <a th:href="@{/adminIndex}" class="waves-effect"><i class="fa fa-clock-o fa-fw"
+                                                                        aria-hidden="true"></i><span class="hide-menu">首页</span></a>
+                </li>
+                <li>
+                    <a th:href="@{/admins/toStation}" class="waves-effect"><i class="fa fa-user fa-fw"
+                                                                              aria-hidden="true"></i><span
+                            class="hide-menu">站点</span></a>
+                </li>
+                <li>
+                    <a th:href="@{/admins/selectAllStation}" class="waves-effect"><i class="fa fa-table fa-fw"
+                                                                                     aria-hidden="true"></i><span
+                            class="hide-menu">查询站点</span></a>
+                </li>
+                <li>
+                    <a th:href="@{/admins/toUser}" class="waves-effect"><i class="fa fa-table fa-fw"
+                                                                           aria-hidden="true"></i><span
+                            class="hide-menu">用户管理</span></a>
+                </li>
+                <li>
+                    <a th:href="@{/admins/toRoadMap}" class="waves-effect"><i class="fa fa-table fa-fw"
+                                                                              aria-hidden="true"></i><span
+                            class="hide-menu">路线图</span></a>
+                </li>
+                <li>
+                    <a th:href="@{/admins/toTrain}" class="waves-effect"><i class="fa fa-table fa-fw"
+                                                                            aria-hidden="true"></i><span
+                            class="hide-menu">班次表</span></a>
+                </li>
+                <li>
+                    <a href="fontawesome.html" class="waves-effect"><i class="fa fa-font fa-fw"
+                                                                       aria-hidden="true"></i><span class="hide-menu">Icons</span></a>
+                </li>
+
+                <!-- <li>
+                    <a href="map-google.html" class="waves-effect"><i class="fa fa-globe fa-fw" aria-hidden="true"></i><span class="hide-menu">Google Map</span></a>
+                </li> -->
+                <!-- <li>
+                    <a href="blank.html" class="waves-effect"><i class="fa fa-columns fa-fw" aria-hidden="true"></i><span class="hide-menu">Blank Page</span></a>
+                </li> -->
+                <li>
+                    <a href="404.html" class="waves-effect"><i class="fa fa-info-circle fa-fw"
+                                                               aria-hidden="true"></i><span
+                            class="hide-menu">Error 404</span></a>
+                </li>
+            </ul>
+            <div class="center p-20">
+                <span class="hide-menu"><a href="#" target="_blank"
+                                           class="btn btn-danger btn-block btn-rounded waves-effect waves-light">Upgrade to Pro</a></span>
+            </div>
+        </div>
+    </div>
+    <!-- Left navbar-header end -->
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h4 class="page-title">Basic Table</h4></div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12"><a href="#"
+                                                                     class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Upgrade
+                    to Pro</a>
+                    <ol class="breadcrumb">
+                        <li><a href="#">Dashboard</a></li>
+                        <li class="active">Basic Table</li>
+                    </ol>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /row -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="white-box">
+                        <!--                        <h3 class="box-title">Basic Table</h3>-->
+                        <!--                        <p class="text-muted">Add class <code>.table</code></p>-->
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                data-target="#addTrainModal">
+                            添加班次
+                        </button>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <tr>
+                                    <th>id</th>
+                                    <th>火车编号</th>
+                                    <th>站点</th>
+                                    <th>发车时间</th>
+                                    <th>到站时间</th>
+                                    <th>用户名</th>
+                                    <th>订单创建时间</th>
+                                    <!--                                    <th>用户Id</th>-->
+                                    <th>管理员</th>
+                                    <th>订单修改时间</th>
+                                    <!--                                    <th>管理员Id</th>-->
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                <tr th:each="orders: ${orderList}">
+                                    <td th:text="${orders.id}"></td>
+                                    <td th:text="${orders.train.trainNumber}"></td>
+                                    <td>
+                                        <span th:text="${orders.train.roadMap.startStation}"></span>
+                                        <span>---></span>
+                                        <span th:text="${orders.train.roadMap.endStation}"></span>
+                                    </td>
+                                    <td th:text="${#dates.format(orders.train.startTime)}"></td>
+                                    <td th:text="${#dates.format(orders.train.endTime)}"></td>
+
+                                    <td th:text="${orders.user.username}"></td>
+                                    <td th:text="${#dates.format(orders.getOrderCreateTime())}"></td>
+                                    <!--                                    <td th:text="${orders.user.id}"></td>-->
+                                    <td th:if="${orders.adminUsername != 0}" th:text="${orders.adminUsername}"></td>
+                                    <td th:if="${orders.adminUsername eq 0}"></td>
+                                    <td th:text="${#dates.format(orders.getOrderOperateTime())}"></td>
+                                    <!--                                    <td th:text="${orders.user.id}"></td>-->
+
+                                    <td th:if="${orders.orderState} eq 0">审核中</td>
+                                    <td th:if="${orders.orderState} eq 1">购买失败</td>
+                                    <td th:if="${orders.orderState} eq 2">购买成功</td>
+                                    <td th:if="${orders.orderState} eq 3">退票成功</td>
+                                    <td th:if="${orders.orderState} eq 4">退票失败</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#agreeorderid" id="agreeBtn"
+                                                th:onclick="agreeOrder([[${orders.id}]])"
+                                                th:data-agreeorderid="${orders.id}"
+                                                th:if="${orders.orderState} != 2">
+                                            同意
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#agreeorderid"
+                                                th:if="${orders.orderState} eq 2" disabled>
+                                            同意
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#updateOrderModal"
+                                                th:data-updateorderid="${orders.id}">
+                                            更新
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#deleteOrderModal"
+                                                th:data-deleteorderid="${orders.id}"
+                                                th:onclick="getDeleteTrainId([[${orders.id}]])">
+                                            删除
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- /.container-fluid -->
+        <footer class="footer text-center"> 2017 &copy; Pixel Admin brought to you by wrappixel - More Templates <a
+                href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a
+                href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></footer>
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+
+
+<!-- 模态框--删除 -->
+<div class="modal fade" id="deleteOrderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel01">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel01">提示</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="deleteOrderId">
+                <p>是否删除！！！</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="deleteOrderBtn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 模态框--修改 -->
+<div class="modal fade" id="updateOrderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel02">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel02">修改</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="oid" class="control-label">id:</label>
+                    <input type="text" class="form-control" id="oid" name="oid" th:name="oid" disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="rselect" class="control-label">路线图:</label>
+                    <select id="rselect">
+                        <option>请选择</option>
+                        <option id="rseOp" th:each="roadmaps: ${roadMapList}" th:value="${roadmaps.id}"
+                                th:text="${roadmaps.toString()}" disabled></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tname" class="control-label">火车编号:</label>
+                    <input type="text" class="form-control" id="tname" name="tname" th:name="tname"/>
+                </div>
+                <div class="form-group">
+                    <label for="stime" class="control-label">发车时间:</label>
+                    <input type="text" class="form-control" id="stime" name="stime" th:name="stime" disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="etime" class="control-label">到站时间:</label>
+                    <input type="text" class="form-control" id="etime" name="etime" th:name="etime" disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="username" class="control-label">用户名:</label>
+                    <input type="text" class="form-control" id="username" name="username" th:name="username" disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="ordercreatetime" class="control-label">订单创建时间:</label>
+                    <input type="text" class="form-control" id="ordercreatetime" name="ordercreatetime"
+                           th:name="ordercreatetime" disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="adminusername" class="control-label">管理员:</label>
+                    <input type="text" class="form-control" id="adminusername" name="adminusername"
+                           th:name="adminusername" disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="orderupdatetime" class="control-label">订单修改时间:</label>
+                    <input type="text" class="form-control" id="orderupdatetime" name="orderupdatetime"
+                           th:name="orderupdatetime" disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="rstate" class="control-label">状态:</label>
+                    <select id="rstate">
+                        <option selected>请选择：</option>
+                        <option name="0" value="0">审核中</option>
+                        <option name="1" value="1">购买失败</option>
+                        <option name="2" value="2">购买成功</option>
+                        <option name="3" value="3">退票成功</option>
+                        <option name="4" value="4">退票失败</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="updateOrderBtn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 模态框--添加 -->
+<div class="modal fade" id="addTrainModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel03">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel03">添加</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="trainId" class="control-label">id:</label>
+                    <input type="text" class="form-control" id="trainId" name="trainId" th:name="trainId" disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="roadMapSelect" class="control-label">路线图:</label>
+                    <select id="roadMapSelect">
+                        <option>请选择</option>
+                        <option id="rmp" th:each="roadmaps: ${roadMapList}" th:value="${roadmaps.id}"
+                                th:text="${roadmaps.toString()}"></option>
+                    </select>
+                    <!--                    <input type="text" class="form-control" id="roadMapSelect" name="roadMapSelect" th:name="roadMapSelect"/>-->
+                </div>
+                <div class="form-group">
+                    <label for="trainName" class="control-label">火车编号:</label>
+                    <input type="text" class="form-control" id="trainName" name="trainName" th:name="trainName"/>
+                </div>
+                <div class="form-group">
+                    <label for="startTime" class="control-label">发车时间:</label>
+                    <input type="date" class="form-control" id="startTime" name="startTime" th:name="startTime"/>
+                </div>
+                <div class="form-group">
+                    <label for="endTime" class="control-label">到站时间:</label>
+                    <input type="date" class="form-control" id="endTime" name="endTime" th:name="endTime"/>
+                </div>
+                <div class="form-group">
+                    <label for="balanceNumber" class="control-label">剩余车票:</label>
+                    <input type="text" class="form-control" id="balanceNumber" name="balanceNumber"
+                           th:name="balanceNumber"/>
+                </div>
+                <div class="form-group">
+                    <label for="trainPrice" class="control-label">价格:</label>
+                    <input type="text" class="form-control" id="trainPrice" name="trainPrice" th:name="trainPrice"/>
+                </div>
+                <div class="form-group">
+                    <label for="trainState" class="control-label">状态:</label>
+                    <input type="text" class="form-control" id="trainState" name="trainState" th:name="trainState"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="addTrainBtn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /#wrapper -->
+<!-- jQuery -->
+<script src="../static/plugins/bower_components/jquery/dist/jquery.min.js"
+        th:href="@{../static/plugins/bower_components/jquery/dist/jquery.min.js}"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="../static/bootstrap/dist/js/bootstrap.min.js"
+        th:href="@{../static/bootstrap/dist/js/bootstrap.min.js}"></script>
+<!-- Menu Plugin JavaScript -->
+<script src="../static/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"
+        th:href="@{../static/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js}"></script>
+<!--slimscroll JavaScript -->
+<script src="../static/js/jquery.slimscroll.js" th:href="@{../static/js/jquery.slimscroll.js}"></script>
+<!--Wave Effects -->
+<script src="../static/js/waves.js" th:href="@{../static/js/waves.js}"></script>
+<!-- Custom Theme JavaScript -->
+<script src="../static/js/custom.min.js" th:href="@{../static/js/custom.min.js}"></script>
+
+</body>
+
+<script>
+    // 用于向模态框里传值
+    $('#updateOrderModal').on('show.bs.modal', function (event) {
+        let btn = $(event.relatedTarget)
+        let oid = btn.data('updateorderid')
+        console.log("oid: " + oid)
+        let modal = $(this)
+
+        $.ajax({
+            url: '/admins/findOrderById',
+            data: {'orderId': oid},
+            dataType: 'json',
+            type: 'get',
+            contentType: 'application/json',
+            success: function (data) {
+                let roleId = 0;
+                if (data.orderAdminId != 0) {
+                    roleId = data.adminUsername;
+                    console.log("roleId: " + roleId)
+                    modal.find(".modal-body #adminusername").val(roleId)
+                }
+                console.log(data.train.roadMap.id)
+                modal.find(".modal-body #oid").val(data.id)
+                modal.find(".modal-body #rselect").val(data.train.roadMap.id)
+                modal.find(".modal-body #tname").val(data.train.trainNumber)
+                modal.find(".modal-body #stime").val(data.train.startTime)
+                modal.find(".modal-body #etime").val(data.train.endTime)
+                modal.find(".modal-body #username").val(data.user.username)
+                modal.find(".modal-body #ordercreatetime").val(data.orderCreateTime)
+
+                modal.find(".modal-body #orderupdatetime").val(data.orderOperateTime)
+                modal.find(".modal-body #rstate").val(data.orderState)
+            },
+            error: function (data) {
+                console.log("错误")
+            }
+        })
+    })
+
+    // 当点击确定按钮后，将管理员输入的班次数据发往后台
+    $('#addTrainBtn').click(function () {
+        let roadMapSelect = $('#roadMapSelect option:selected').val()
+        let trainId = $('#trainId').val()
+        let trainName = $('#trainName').val()
+        let startTime = $('#startTime').val()
+        let endTime = $('#endTime').val()
+        let balanceNumber = $('#balanceNumber').val()
+        let trainPrice = $('#trainPrice').val()
+        let trainState = $('#trainState').val()
+        console.log("roadMapSelect: " + roadMapSelect)
+
+        $.ajax({
+            url: '/admins/addTrain',
+            type: 'post',
+            data: {
+                roadMapSelect: roadMapSelect,
+                trainNumber: trainName,
+                startTime: startTime,
+                endTime: endTime,
+                balanceNumber: balanceNumber,
+                trainPrice: trainPrice,
+                trainState: trainState
+            },
+            success: function (data) {
+                if (data === 2) {
+                    alert("添加成功")
+                    flushOption()
+                    $('#addTrainModal').modal('hide')
+                    console.log(data)
+                } else if (data === 1) {
+                    alert("班次已存在")
+                } else {
+                    alert("添加失败")
+                }
+            },
+            error: function (data) {
+                alert("错误")
+            }
+        })
+    })
+
+    // 在更新完用户操作后，查询全部用户并刷新
+    function flushOption() {
+        $.ajax({
+            url: '/admins/toOrder',
+            success: function (msg) {
+                // 刷新页面
+                window.location.reload()
+            },
+            error: function (data) {
+                alert("错误")
+            }
+        })
+    }
+
+    // 同意订单
+    function agreeOrder(orderId) {
+        console.log("oid: " + orderId)
+        $.ajax({
+            url: "/admins/agreeOrder?oid=" + orderId,
+            type: "get",
+            // data: {oid: orderId},
+            dataType: 'json',
+            success: function (state) {
+                if (state === 2) {
+                    alert("成功")
+                    window.location.reload()
+                } else {
+                    alert("失败")
+                }
+            },
+            error: function () {
+                alert("错误")
+            }
+        })
+    }
+
+    // 当点击保存按钮是，往后台发送修改后的订单信息
+    $('#updateOrderBtn').click(function () {
+        let oid = $('#oid').val()
+        let roadMapSelect = $('#rselect option:selected').val()
+        let tname = $('#tname').val()
+        let stime = $('#stime').val()
+        let etime = $('#etime').val()
+        let username = $('#username').val()
+        let ordercreatetime = $('#ordercreatetime').val()
+        let adminusername = $('#adminusername').val()
+        let orderupdatetime = $('#orderupdatetime').val()
+        let state = $('#rstate option:selected').val()
+
+        $.ajax({
+            url: '/admins/updateOrder',
+            type: 'get',
+            data: {
+                oid: oid,
+                roadMapSelectId: roadMapSelect,
+                tname: tname,
+                startTime: stime,
+                endTime: etime,
+                username: username,
+                ordercreatetime: ordercreatetime,
+                adminusername: adminusername,
+                orderupdatetime: orderupdatetime,
+                state: state,
+            },
+            contentType: 'application/json',
+            success: function (data) {
+                if (data === 2) {
+                    window.location.reload()
+                    $('#updateOrderModal').modal('hide')
+                    console.log(data)
+                }
+            },
+            error: function (data) {
+                alert("错误")
+            }
+        })
+    })
+
+
+    // 获得要删除用户的id，模态框获得隐藏的id值
+    function getDeleteTrainId(id) {
+        $('#deleteOrderId').val(id)
+    }
+
+    // 实现删除站点功能并把整个页面刷新
+    $('#deleteOrderBtn').click(function () {
+        let id = $('#deleteOrderId').val()
+        console.log(id)
+        $.ajax({
+            url: '/admins/deleteOrder',
+            data: {oid: id},
+            dataType: 'json',
+            success: function (data) {
+                if (data === 2) {
+                    alert("删除成功")
+                    flushOption()
+                    $('#deleteTrainModal').modal('hide')
+                } else {
+                    alert("删除失败")
+                }
+            },
+            error: function () {
+                alert("错误")
+            }
+        })
+    })
+
+</script>
+</html>

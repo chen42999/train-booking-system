@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="personal.ch.trainbookingsystem.repository.UserRepository">
+    <insert id="saveUser" parameterType="personal.ch.trainbookingsystem.entity.Users">
+        insert into train_booking_system.users(username, password, name, id_number, phone)
+        VALUES (#{username}, #{password}, #{name},
+                #{idNumber}, #{phone})
+    </insert>
+    <insert id="saveUserRole" parameterType="long">
+        insert into train_booking_system.role_user(user_id, role_id)
+        VALUES (#{userId}, 2)
+    </insert>
+
+    <select id="findByUsername" parameterType="java.lang.String"
+            resultType="personal.ch.trainbookingsystem.entity.Users">
+        select *
+        from train_booking_system.users
+        where username = #{username}
+    </select>
+    <select id="login" parameterType="personal.ch.trainbookingsystem.entity.Users" resultType="java.lang.Integer">
+        select *
+        from train_booking_system.users
+        where username = #{username}
+          and password = #{password}
+    </select>
+    <select id="findAuthorityByUsername" parameterType="long" resultType="java.lang.String">
+        select name
+        from train_booking_system.role_user ru,
+             train_booking_system.role r
+        where r.id = ru.role_id
+          and ru.user_id = #{userId}
+    </select>
+
+    <!--    用户行为-->
+    <select id="findUserInfoByUsername" resultType="personal.ch.trainbookingsystem.entity.Users">
+        select id, username, password, name, id_number, phone
+        from train_booking_system.users
+        where username = #{username}
+    </select>
+    <update id="updateUserInfo">
+        update train_booking_system.users
+        set
+        <if test="username != null and username != ''">username = #{username},</if>
+        <if test="name != null and name != ''">name = #{name},</if>
+        <if test="idNumber != null and idNumber != ''">id_number = #{idNumber},</if>
+        <if test="phone != null and phone != ''">phone = #{phone}</if>
+        where username = #{username}
+    </update>
+    <!--    找回密码-->
+    <update id="retrievePasswordPassword">
+        update train_booking_system.users
+        set password = #{password}
+        where username = #{username}
+    </update>
+
+    <!--    // 查询全部的班次列表-->
+    <resultMap id="userTrainRoadMap" type="personal.ch.trainbookingsystem.entity.Train">
+        <id property="id" column="id"/>
+        <result property="trainNumber" column="train_number"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="price" column="price"/>
+        <result property="ticketNumber" column="ticket_number"/>
+        <result property="state" column="state"/>
+        <association property="roadMap" javaType="personal.ch.trainbookingsystem.entity.RoadMap">
+            <result property="id" column="id"/>
+            <result property="startStation" column="start_station"/>
+            <result property="endStation" column="end_station"/>
+        </association>
+    </resultMap>
+    <select id="selectAllTrain" resultType="personal.ch.trainbookingsystem.entity.Train" resultMap="userTrainRoadMap">
+        select t.id,
+        r.start_station,
+        r.end_station,
+        t.start_time,
+        t.end_time,
+        t.train_number,
+        t.price,
+        t.ticket_number,
+        t.state
+        from train_booking_system.train t,
+        train_booking_system.roadmap r,
+        train_booking_system.train_roadmap tr
+        where tr.train_id = t.id
+        and tr.roadmap_id = r.id
+        <if test="startTime != null and startTime != ''">
+            and t.start_time = #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and t.end_time = #{endTime}
+        </if>
+        order by t.id
+        limit #{page},#{limit}
+    </select>
+    <select id="getPages" resultType="java.lang.Integer">
+        select count(id)
+        from train_booking_system.train
+        where id != 0
+        <if test="startTime != null and startTime != ''">
+            and start_time >= #{startTime}
+        </if>
+    </select>
+
+    <!--    买票(用户订单) -->
+    <insert id="buyTicket">
+        insert into train_booking_system.order(train_id, user_id, order_create_time, order_admin_id,
+                                               order_operate_time, order_state, ticket_id)
+        VALUES (#{trainId}, #{userId}, #{createTime}, 0, null, 2, #{ticketId});
+
+        insert into train_booking_system.ticket (ticket_number, state, train_id, user_id)
+        values (0000, 1, #{trainId}, #{userId});
+
+        update train_booking_system.train
+        set ticket_number = ticket_number - 1
+        where id = #{trainId}
+          and ticket_number > 0;
+    </insert>
+
+    <!--    订单与用户映射关联-->
+    <resultMap id="userOrderMap" type="personal.ch.trainbookingsystem.entity.Order">
+        <id property="id" column="id"/>
+        <result property="orderCreateTime" column="order_create_time"/>
+        <result property="orderState" column="order_state"/>
+        <result property="orderOperateTime" column="order_operate_time"/>
+        <association property="trainId" javaType="personal.ch.trainbookingsystem.entity.Train">
+            <id property="id" column="id"/>
+            <result property="trainNumber" column="train_number"/>
+        </association>
+        <association property="userId" javaType="personal.ch.trainbookingsystem.entity.Users">
+            <id property="id" column="id"/>
+            <result property="username" column="username"/>
+            <result property="name" column="name"/>
+        </association>
+    </resultMap>
+    <!--    用户查询订单信息-->
+    <select id="userFindOrderInfo" resultType="personal.ch.trainbookingsystem.entity.Order" resultMap="userOrderMap">
+        select o.id,
+               t.id,
+               t.train_number,
+               r.start_station,
+               r.end_station,
+               t.start_time,
+               t.end_time,
+               u.id,
+               u.username,
+               o.order_create_time,
+               o.order_state
+        from train_booking_system.order o,
+             train_booking_system.users u,
+             train_booking_system.train t,
+             train_booking_system.roadmap r,
+             train_booking_system.train_roadmap rm
+        where u.id = o.user_id
+          and o.train_id = t.id
+          and rm.train_id = t.id
+          and rm.roadmap_id = r.id
+          and u.username = #{username}
+    </select>
+
+    <!--    火车与路线图映射关联-->
+    <resultMap id="userOrderTrainRoadMap" type="personal.ch.trainbookingsystem.entity.Train">
+        <id property="id" column="id"/>
+        <result property="trainNumber" column="train_number"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="price" column="price"/>
+        <result property="ticketNumber" column="ticket_number"/>
+        <result property="state" column="state"/>
+
+        <association property="roadMap" javaType="personal.ch.trainbookingsystem.entity.RoadMap">
+            <id property="id" column="id"/>
+            <result property="startStation" column="start_station"/>
+            <result property="endStation" column="end_station"/>
+        </association>
+    </resultMap>
+    <!--    用于火车与路线图查询查询-->
+    <select id="findOrderTrainByTrainId" resultType="personal.ch.trainbookingsystem.entity.Train"
+            resultMap="userOrderTrainRoadMap">
+        select t.id,
+               r.start_station,
+               r.end_station,
+               t.start_time,
+               t.end_time,
+               t.train_number,
+               t.price,
+               t.ticket_number,
+               t.state
+        from train_booking_system.train t,
+             train_booking_system.roadmap r,
+             train_booking_system.train_roadmap tr
+        where tr.train_id = t.id
+          and tr.roadmap_id = r.id
+          and t.id = #{trainId}
+    </select>
+
+    <!--    查询路线图-->
+    <select id="getRoadMap" resultType="personal.ch.trainbookingsystem.entity.RoadMap">
+        select *
+        from train_booking_system.roadmap r,
+             train_booking_system.train_roadmap rm
+    </select>
+
+    <!--    用户与车票映射关联-->
+    <resultMap id="userTicketMap" type="personal.ch.trainbookingsystem.entity.Ticket">
+        <id property="ticketId" column="ticket_id"/>
+        <result property="ticketNumber" column="ticket_number"/>
+        <result property="state" column="state"/>
+        <association property="train" javaType="personal.ch.trainbookingsystem.entity.Train">
+            <id property="id" column="id"/>
+            <result property="trainNumber" column="train_number"/>
+            <result property="startTime" column="start_time"/>
+            <result property="endTime" column="end_time"/>
+            <result property="state" column="state"/>
+            <result property="price" column="price"/>
+        </association>
+        <association property="users" javaType="personal.ch.trainbookingsystem.entity.Users">
+            <id property="id" column="id"/>
+            <result property="username" column="username"/>
+            <result property="name" column="name"/>
+            <result property="idNumber" column="id_number"/>
+            <result property="phone" column="phone"/>
+        </association>
+    </resultMap>
+    <!--    用户查询车票信息-->
+    <select id="findUserTicketInfo" resultType="personal.ch.trainbookingsystem.entity.Ticket"
+            resultMap="userTicketMap">
+        select t.ticket_id,
+               t.ticket_number,
+               t.state,
+               t.train_id,
+               t.user_id,
+               tr.id,
+               tr.train_number,
+               tr.start_time,
+               tr.end_time,
+               tr.price,
+               tr.ticket_number,
+               tr.state,
+               u.username,
+               u.password,
+               u.name,
+               u.id_number,
+               u.phone
+        from train_booking_system.ticket t,
+             train_booking_system.train tr,
+             train_booking_system.users u
+        where t.user_id = u.id
+          and t.train_id = tr.id
+          and t.user_id = #{userId}
+    </select>
+    <!--    用户通过车票id查找-->
+    <select id="findTicketByTicketId" resultType="personal.ch.trainbookingsystem.entity.Ticket">
+        select *
+        from train_booking_system.ticket
+        where ticket_id = #{ticketId};
+    </select>
+    <select id="selectAllRoadMap" resultType="personal.ch.trainbookingsystem.entity.RoadMap">
+        select *
+        from train_booking_system.roadmap;
+    </select>
+    <select id="findRoadMapById" resultType="personal.ch.trainbookingsystem.entity.RoadMap">
+        select *
+        from train_booking_system.roadmap
+        where id = #{id}
+    </select>
+    <select id="findTrainRoadMapById" resultType="personal.ch.trainbookingsystem.entity.TrainRoadMap">
+        select *
+        from train_booking_system.train_roadmap
+        where train_id = #{trainId};
+    </select>
+
+    <!--    火车与路线图映射关联-->
+    <resultMap id="ticketChangTrainRoadMap" type="personal.ch.trainbookingsystem.entity.Train">
+        <id property="id" column="id"/>
+        <result property="trainNumber" column="train_number"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="price" column="price"/>
+        <result property="ticketNumber" column="ticket_number"/>
+        <result property="state" column="state"/>
+
+        <association property="roadMap" javaType="personal.ch.trainbookingsystem.entity.RoadMap">
+            <id property="id" column="id"/>
+            <result property="startStation" column="start_station"/>
+            <result property="endStation" column="end_station"/>
+        </association>
+    </resultMap>
+    <!--    用户改签, 展示特定条件下的火车列表-->
+    <select id="findTrainByTrainIdList" resultType="personal.ch.trainbookingsystem.entity.Train"
+            resultMap="ticketChangTrainRoadMap">
+        select t.id,
+        r.start_station,
+        r.end_station,
+        t.start_time,
+        t.end_time,
+        t.train_number,
+        t.price,
+        t.ticket_number,
+        t.state
+        from train_booking_system.train t,
+        train_booking_system.roadmap r,
+        train_booking_system.train_roadmap tr
+        where tr.train_id = t.id
+        and tr.roadmap_id = r.id
+        <if test="startStation != null and startStation != ''">
+            and r.start_station = #{startStation}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and t.start_time >= #{startTime}
+        </if>
+    </select>
+    <!--    // 通过车票id获得车票（ticket）信息-->
+    <select id="findTicketById" resultType="personal.ch.trainbookingsystem.entity.Ticket">
+        select *
+        from train_booking_system.ticket
+        where ticket_id = #{ticketId}
+    </select>
+
+    <!--    用户退票操作-->
+    <update id="dishonourTrain">
+        update train_booking_system.ticket
+        set state = 2
+        where ticket_id = #{ticketId};
+
+        update train_booking_system.train
+        set ticket_number = #{ticketsLeft}
+        where id = #{trainId};
+    </update>
+    <!--    更新改签-->
+    <update id="updateTrainTicketByTrainId">
+        update train_booking_system.ticket
+        set train_id = #{sTrainId}
+        where ticket_id = #{ticketId};
+
+        # 改签后的火车票数减一
+        update train_booking_system.train
+        set ticket_number = ticket_number - 1
+        where id = #{sTrainId};
+
+        # 改签前的火车票数加1
+        update train_booking_system.train
+        set ticket_number = ticket_number + 1
+        where id = #{pTrainId};
+
+        # 订单火车id修改
+        update train_booking_system.order
+        set train_id = #{sTrainId}
+        where ticket_id = #{ticketId};
+    </update>
+
+</mapper>

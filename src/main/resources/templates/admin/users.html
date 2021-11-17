@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/plugins/images/favicon.png"
+          th:href="@{../static/plugins/images/favicon.png}">
+
+    <link href="../static/bootstrap/dist/css/bootstrap.min.css" type="text/css" rel="stylesheet"
+          th:href="@{../static/bootstrap/dist/css/bootstrap.min.css}">
+    <!-- Menu CSS -->
+    <link href="../static/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet"
+          type="text/css" th:href="@{../static/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css}">
+    <!-- toast CSS -->
+    <link href="../static/plugins/bower_components/toast-master/css/jquery.toast.css" rel="stylesheet" type="text/css"
+          th:href="@{../static/plugins/bower_components/toast-master/css/jquery.toast.css}">
+    <!-- animation CSS -->
+    <link href="../static/css/animate.css" rel="stylesheet" th:href="@{../static/css/animate.css}">
+    <!-- Custom CSS -->
+    <link href="../static/css/style.css" rel="stylesheet" th:href="@{../static/css/style.css}">
+    <!-- color CSS -->
+    <link href="../static/css/colors/blue-dark.css" id="theme" rel="stylesheet"
+          th:href="@{../static/css/colors/blue-dark.css}">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<!-- Preloader -->
+<div class="preloader">
+    <div class="cssload-speeding-wheel"></div>
+</div>
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top m-b-0">
+        <div class="navbar-header"><a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)"
+                                      data-toggle="collapse" data-target=".navbar-collapse"><i class="fa fa-bars
+"></i></a>
+            <div class="top-left-part"><a class="logo" href="index.html"><b><img
+                    src="../static/plugins/images/pixeladmin-logo.png"
+                    th:href="@{../static/plugins/images/pixeladmin-logo.png}" alt="home"/></b><span
+                    class="hidden-xs"><img src="../static/plugins/images/pixeladmin-text.png"
+                                           th:href="@{../static/plugins/images/pixeladmin-text.png}" alt="home"/></span></a>
+            </div>
+            <ul class="nav navbar-top-links navbar-left m-l-20 hidden-xs">
+                <li>
+                    <form role="search" class="app-search hidden-xs">
+                        <input type="text" placeholder="Search..." class="form-control"> <a href=""><i
+                            class="fa fa-search"></i></a>
+                    </form>
+                </li>
+            </ul>
+            <ul class="nav navbar-top-links navbar-right pull-right">
+                <li>
+                    <a class="profile-pic" href="#"> <img src="../static/plugins/images/users/varun.jpg"
+                                                          th:href="@{../static/plugins/images/users/varun.jpg}"
+                                                          alt="user-img" width="36" class="img-circle"><b
+                            class="hidden-xs">Steave</b> </a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-header -->
+        <!-- /.navbar-top-links -->
+        <!-- /.navbar-static-side -->
+    </nav>
+    <!-- Left navbar-header -->
+    <div class="navbar-default sidebar" role="navigation">
+        <div class="sidebar-nav navbar-collapse slimscrollsidebar">
+            <ul class="nav" id="side-menu">
+                <li style="padding: 10px 0 0;">
+                    <a th:href="@{/adminIndex}" class="waves-effect"><i class="fa fa-clock-o fa-fw" aria-hidden="true"></i><span class="hide-menu">首页</span></a>
+                </li>
+                <li>
+                    <a th:href="@{/admins/toStation}" class="waves-effect"><i class="fa fa-user fa-fw" aria-hidden="true"></i><span class="hide-menu">站点</span></a>
+                </li>
+                <li>
+                    <a th:href="@{/admins/selectAllStation}" class="waves-effect"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span class="hide-menu">查询站点</span></a>
+                </li>
+                <li>
+                    <a th:href="@{/admins/toUser}" class="waves-effect"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span class="hide-menu">用户管理</span></a>
+                </li>
+                <li>
+                    <a th:href="@{/admins/toRoadMap}" class="waves-effect"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span class="hide-menu">路线图</span></a>
+                </li>
+                <li>
+                    <a th:href="@{/admins/toTrain}" class="waves-effect"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span class="hide-menu">班次表</span></a>
+                </li>
+                <li>
+                    <a href="fontawesome.html" class="waves-effect"><i class="fa fa-font fa-fw" aria-hidden="true"></i><span class="hide-menu">Icons</span></a>
+                </li>
+
+                <!-- <li>
+                    <a href="map-google.html" class="waves-effect"><i class="fa fa-globe fa-fw" aria-hidden="true"></i><span class="hide-menu">Google Map</span></a>
+                </li> -->
+                <!-- <li>
+                    <a href="blank.html" class="waves-effect"><i class="fa fa-columns fa-fw" aria-hidden="true"></i><span class="hide-menu">Blank Page</span></a>
+                </li> -->
+                <li>
+                    <a href="404.html" class="waves-effect"><i class="fa fa-info-circle fa-fw" aria-hidden="true"></i><span class="hide-menu">Error 404</span></a>
+                </li>
+            </ul>
+            <div class="center p-20">
+                <span class="hide-menu"><a href="#" target="_blank"
+                                           class="btn btn-danger btn-block btn-rounded waves-effect waves-light">Upgrade to Pro</a></span>
+            </div>
+        </div>
+    </div>
+    <!-- Left navbar-header end -->
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h4 class="page-title">Basic Table</h4></div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12"><a href="#"
+                                                                     class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Upgrade
+                    to Pro</a>
+                    <ol class="breadcrumb">
+                        <li><a href="#">Dashboard</a></li>
+                        <li class="active">Basic Table</li>
+                    </ol>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /row -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="white-box">
+                        <!--                        <h3 class="box-title">Basic Table</h3>-->
+                        <!--                        <p class="text-muted">Add class <code>.table</code></p>-->
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                data-target="#addUserModal">
+                            添加用户
+                        </button>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <tr>
+                                    <td>id</td>
+                                    <td>用户名</td>
+                                    <td>密码</td>
+                                    <td>姓名</td>
+                                    <td>身份证号</td>
+                                    <td>手机号</td>
+                                    <td>用户身份</td>
+                                    <td>操作</td>
+                                </tr>
+                                <tr th:each="users: ${pageInfo.list}">
+                                    <td th:text="${users.id}"></td>
+                                    <td th:text="${users.getUsername()}"></td>
+                                    <td th:text="${users.getPassword()}"></td>
+                                    <td th:text="${users.getName()}"></td>
+                                    <td th:text="${users.getIdNumber()}"></td>
+                                    <td th:text="${users.getPhone()}"></td>
+                                    <td th:if="${users.roleId} eq 1">管理员</td>
+                                    <td th:if="${users.roleId} eq 2">普通用户</td>
+                                    <td>
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#updateUserModal" th:data-userid="${users.id}">
+                                            修改
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#resetPasswordModal" th:onclick="getUsername([[${users.username}]])">
+                                            重置密码
+                                        </button>
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#deleteUserModal" th:onclick="getDeleteUserId([[${users.id}]])">
+                                            删除
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <p>当前 <span th:text="${pageInfo.pageNum}"></span> 页,总 <span th:text="${pageInfo.pages}"></span> 页,共 <span th:text="${pageInfo.total}"></span> 条记录</p>
+                <a th:href="@{/admins/toUser}">首页</a>
+                <a th:href="@{/admins/toUser(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1)}">上一页</a>
+                <a th:href="@{/admins/toUser(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages})}">下一页</a>
+                <a th:href="@{/admins/toUser(pageNum=${pageInfo.pages})}">尾页</a>
+            </div>
+
+        </div>
+        <!-- /.container-fluid -->
+        <footer class="footer text-center"> 2017 &copy; Pixel Admin brought to you by wrappixel - More Templates <a
+                href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a
+                href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></footer>
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+
+<!-- 模态框--重置密码 -->
+<div class="modal fade" id="resetPasswordModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel04">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel04">提示</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="byUsername">
+                <p>是否重置密码！！！</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="resetPwdBtn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 模态框--删除 -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel01">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel01">提示</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="deleteUserId">
+                <p>是否删除！！！</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="deleteUserBtn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 模态框--修改 -->
+<div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel02">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel02">修改</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="userId" class="control-label">id:</label>
+                    <input type="text" class="form-control" id="userId" name="userId" th:name="userId" disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="username" class="control-label">用户名:</label>
+                    <input type="text" class="form-control" id="username" name="username" th:name="username"/>
+                </div>
+<!--                <div class="form-group">-->
+<!--                    <label for="password" class="control-label">密码:</label>-->
+<!--                    <input type="password" class="form-control" id="password" name="password" th:name="password" disabled/>-->
+<!--                </div>-->
+                <div class="form-group">
+                    <label for="name" class="control-label">姓名:</label>
+                    <input type="text" class="form-control" id="name" name="name" th:name="name"/>
+                </div>
+                <div class="form-group">
+                    <label for="idNumber" class="control-label">身份证号码:</label>
+                    <input type="text" class="form-control" id="idNumber" name="idNumber" th:name="idNumber"/>
+                </div>
+                <div class="form-group">
+                    <label for="phone" class="control-label">手机号:</label>
+                    <input type="text" class="form-control" id="phone" name="phone" th:name="phone"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="saveUserBtn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 模态框--添加 -->
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel03">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel03">增加</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="uid" class="control-label">id:</label>
+                    <input type="text" class="form-control" id="uid" name="uid" th:name="uid" disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="uname" class="control-label">用户名:</label>
+                    <input type="text" class="form-control" id="uname" name="uname" th:name="uname"/>
+                </div>
+                <div class="form-group">
+                    <label for="pwd" class="control-label">密码:</label>
+                    <input type="password" class="form-control" id="pwd" name="pwd" th:name="pwd"/>
+                </div>
+                <div class="form-group">
+                    <label for="names" class="control-label">姓名:</label>
+                    <input type="text" class="form-control" id="names" name="names" th:name="names"/>
+                </div>
+                <div class="form-group">
+                    <label for="idNum" class="control-label">身份证号码:</label>
+                    <input type="text" class="form-control" id="idNum" name="idNum" th:name="idNum"/>
+                </div>
+                <div class="form-group">
+                    <label for="telephone" class="control-label">手机号:</label>
+                    <input type="text" class="form-control" id="telephone" name="telephone" th:name="telephone"/>
+                </div>
+                <div class="form-group">
+                    <label for="userOption">选择权限:</label>
+                    <select id="userOption">
+                        <option value="1" th:value="1">管理员</option>
+                        <option value="2" th:value="2" selected>普通用户</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="addUserBtn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /#wrapper -->
+<!-- jQuery -->
+<script src="../static/plugins/bower_components/jquery/dist/jquery.min.js"
+        th:href="@{../static/plugins/bower_components/jquery/dist/jquery.min.js}"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="../static/bootstrap/dist/js/bootstrap.min.js"
+        th:href="@{../static/bootstrap/dist/js/bootstrap.min.js}"></script>
+<!-- Menu Plugin JavaScript -->
+<script src="../static/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"
+        th:href="@{../static/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js}"></script>
+<!--slimscroll JavaScript -->
+<script src="../static/js/jquery.slimscroll.js" th:href="@{../static/js/jquery.slimscroll.js}"></script>
+<!--Wave Effects -->
+<script src="../static/js/waves.js" th:href="@{../static/js/waves.js}"></script>
+<!-- Custom Theme JavaScript -->
+<script src="../static/js/custom.min.js" th:href="@{../static/js/custom.min.js}"></script>
+
+
+</body>
+
+<script>
+    // 用于向模态框里传值
+    $('#updateUserModal').on('show.bs.modal', function (event) {
+        let btn = $(event.relatedTarget)
+        let uid = btn.data('userid')
+        console.log(uid)
+        let modal = $(this)
+
+        $.ajax({
+            url: '/admins/returnSingleUserInfo',
+            data: {userId: uid},
+            dataType: 'json',
+            type: 'get',
+            contentType: 'application/json',
+            success: function (data) {
+                modal.find(".modal-body #userId").val(data.id)
+                modal.find(".modal-body #username").val(data.username)
+                modal.find(".modal-body #password").val(data.password)
+                modal.find(".modal-body #name").val(data.name)
+                modal.find(".modal-body #idNumber").val(data.idNumber)
+                modal.find(".modal-body #phone").val(data.phone)
+            },
+            error: function (data) {
+                console.log("错误")
+            }
+        })
+    })
+
+    // 当点击保存按钮是，往后台发送修改后的用户信息
+    $('#saveUserBtn').click(function () {
+        let sId = $('#userId').val()
+        let sName = $('#username').val()
+        let password = $('#password').val()
+        let name = $('#name').val()
+        let idNumber = $('#idNumber').val()
+        let phone = $('#phone').val()
+
+        $.ajax({
+            url: '/admins/updateSingleUser',
+            data: {
+                userId: sId,
+                username: sName,
+                // password: password,
+                name: name,
+                idNumber: idNumber,
+                phone: phone
+            },
+            success: function (data) {
+                if (data === true) {
+                    flushOption()
+                    $('#updateUserModal').modal('hide')
+                    console.log(data)
+                }
+            },
+            error: function (data) {
+                alert("错误")
+            }
+        })
+    })
+
+    // 在更新完用户操作后，查询全部用户并刷新
+    function flushOption() {
+        $.ajax({
+            url: '/admins/toUser',
+            success: function (msg) {
+                // 刷新页面
+                window.location.reload()
+            },
+            error: function (data) {
+                alert("错误")
+            }
+        })
+    }
+
+    // 当点击确定按钮后，将管理员输入的用户数据发往后台
+    $('#addUserBtn').click(function () {
+        let uid = $('#uid').val()
+        let uname = $('#uname').val()
+        let pwd = $('#pwd').val()
+        let names = $('#names').val()
+        let idNum = $('#idNum').val()
+        let telephone = $('#telephone').val()
+        let userRoleId = $('#userOption option:selected').val()
+
+        $.ajax({
+            url: '/admins/addUser',
+            type: 'post',
+            data: {
+                uid: uid,
+                uname: uname,
+                pwd: pwd,
+                names: names,
+                idNum: idNum,
+                telephone: telephone,
+                userRoleId: userRoleId
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data === 2) {
+                    alert("成功")
+                    flushOption()
+                    $('#addUserModal').modal('hide')
+                } else if (data === 1) {
+                    alert("用户名已存在")
+                    $('#addUserModal').modal('hide')
+                }
+            },
+            error: function (data) {
+                    alert("失败")
+            }
+        })
+    })
+
+    // 重置密码
+    $("#resetPwdBtn").click(function () {
+        let uname = $("#byUsername").val();
+        console.log(uname)
+        $.ajax({
+            url: '/admins/resetPwd',
+            type: 'post',
+            data: {username: uname},
+            dataType: 'json',
+            success: function (flag) {
+                if (flag === 2){
+                    alert("重置成功");
+                    window.location.reload();
+                } else if (flag === 1){
+                    alert("重置失败")
+                }
+            },
+            error: function (flag) {
+                alert("错误")
+            }
+        })
+    })
+
+    // 重置密码
+    function resetPwd(username) {
+        console.log(username)
+        $.ajax({
+            url: '/admins/resetPwd',
+            data: {username: username},
+            success: function (flag) {
+                if (flag === 2){
+                    alert("重置成功");
+                    window.location.reload();
+                } else if (flag === 1){
+                    alert("充值失败")
+                }
+            },
+            error: function (flag) {
+                alert("错误")
+            }
+        })
+    }
+
+    function getUsername(username) {
+        $("#byUsername").val(username)
+    }
+
+    // 获得要删除用户的id，模态框获得隐藏的id值
+    function getDeleteUserId(id) {
+        $('#deleteUserId').val(id)
+    }
+
+    // 实现删除站点功能并把整个页面刷新
+    $('#deleteUserBtn').click(function () {
+        let id = $('#deleteUserId').val()
+        console.log(id)
+        $.ajax({
+            url: '/admins/deleteSingleUser',
+            data: {uid: id},
+            dataType: 'json',
+            success: function (data) {
+                if (data === 2){
+                    alert("删除成功")
+                    flushOption()
+                    $('#deleteUserModal').modal('hide')
+                }
+            }
+        })
+    })
+
+</script>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.css" rel="stylesheet">
+  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.js"></script>
+  <link href="https://cdn.bootcdn.net/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.css"
+        rel="stylesheet">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.js"></script>
+</head>
+<body>
+<h2>MyOrder</h2>
+<a th:href="@{/index}">首页</a>
+<input type="text" id="ticketId" name="ticket"/>
+<input type="text" id="startTime" name="startTime"/>
+<input type="text" id="endTime"/>
+<input type="text" id="customerName"/>
+<input type="text" id="customerIdNumber"/>
+<input type="text" id="price"/>
+<input type="text" id="state"/>
+<table class="table table-hover">
+  <tr>
+    <th>id</th>
+    <th>火车编号</th>
+    <th>站点</th>
+    <th>发车时间</th>
+    <th>到站时间</th>
+    <th>用户名</th>
+    <th>订单提交时间</th>
+    <th>状态</th>
+  </tr>
+  <tr th:each="orders: ${orderList}">
+    <td th:text="${orders.id}"></td>
+    <td th:text="${orders.trainId.trainNumber}"></td>
+    <td>
+      <span th:text="${orders.trainId.roadMap.startStation}"></span>
+      <span>---></span>
+      <span th:text="${orders.trainId.roadMap.endStation}"></span>
+    </td>
+    <td th:text="${#dates.format(orders.trainId.startTime)}"></td>
+    <td th:text="${#dates.format(orders.trainId.endTime)}"></td>
+    <td th:text="${orders.userId.username}"></td>
+    <td th:text="${#dates.format(orders.getOrderCreateTime())}"></td>
+    <td th:if="${orders.orderState} eq 0">审核中</td>
+    <td th:if="${orders.orderState} eq 1">购买失败</td>
+    <td th:if="${orders.orderState} eq 2">购买成功</td>
+    <td th:if="${orders.orderState} eq 3">退票成功</td>
+    <td th:if="${orders.orderState} eq 4">退票失败</td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"><!-- Thymeleaf提供的Spring Security标签支持 -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/favicon.ico">
+    <link rel="canonical" href="https://getbootstrap.com/docs/3.4/examples/navbar/">
+
+    <title>Navbar Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/assets/css/ie10-viewport-bug-workaround.css"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/examples/navbar/navbar.css"
+          rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/assets/js/ie8-responsive-file-warning.js"></script>
+    <![endif]-->
+    <script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">铁路售票系统</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- 我的信息 -->
+                    <li class="dropdown" sec:authorize="isAuthenticated()">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            <span sec:authentication="name"></span>
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/findUserTicketInfo}">我的火车票</a></li>
+                            <!--                            <li><a th:href="@{/userFindOrderInfo}">我的订单信息</a></li>-->
+                            <li role="separator" class="divider"></li>
+                            <!-- <li class="dropdown-header">Nav header</li> -->
+                            <li><a href="/toUserInfo">查看个人信息</a></li>
+                            <li><a href="/toRetrievePwd">找回密码</a></li>
+                            <li><a th:href="@{/logout}">注销</a></li>
+                        </ul>
+                    </li>
+                    <li sec:authorize="!isAuthenticated()"><a th:href="@{/toLogin}">游客</a></li>
+
+                    <li><a th:href="@{/toLogin}">登录</a></li>
+                    <li><a th:href="@{/toRegister}">注册</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+    </nav>
+
+    <!-- Main component for a primary marketing message or call to action -->
+    <div class="jumbotron">
+
+    </div>
+
+</div> <!-- /container -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="buyTicketModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">购买车票</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="trainid"/>
+                <p>是否购买车票</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">否</button>
+                <button type="button" class="btn btn-primary" id="buyBtn">是</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"
+        integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+        crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/dist/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.17/assets/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+<script>
+
+</script>
+</html>
+
+
+
+
+
+<!--<div align="center">-->
+<!--    <table border="1">-->
+<!--        <tr>-->
+<!--            <th>id</th>-->
+<!--            <th>name</th>-->
+<!--            <th>sex</th>-->
+<!--            <th>age</th>-->
+<!--        </tr>-->
+<!--        <tr th:each="user:${pageInfo.list}">-->
+<!--            <td th:text="${user.id}"></td>-->
+<!--            <td th:text="${user.name}"></td>-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--    <p>当前 <span th:text="${pageInfo.pageNum}"></span> 页,总 <span th:text="${pageInfo.pages}"></span> 页,共 <span th:text="${pageInfo.total}"></span> 条记录</p>-->
+<!--    <a th:href="@{/test/getAllUser}">首页</a>-->
+<!--    <a th:href="@{/test/getAllUser(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1)}">上一页</a>-->
+<!--    <a th:href="@{/test/getAllUser(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages})}">下一页</a>-->
+<!--    <a th:href="@{/test/getAllUser(pageNum=${pageInfo.pages})}">尾页</a>-->
+<!--</div>-->
+
+<!--&lt;!&ndash;<a href="/test/json">点击</a>&ndash;&gt;-->
+<!--<button type="button" id="btn">点击</button>-->
+<!--</body>-->
+<!--<script>-->
+<!--    $("#btn").click(function () {-->
+<!--        $.ajax({-->
+<!--            url: '/test/json',-->
+<!--            type: 'post',-->
+<!--            data: {name: 'aaa', age: '18'},-->
+<!--            dataType: 'json',-->
+<!--            contentType: 'application/json',-->
+<!--            success: function (data) {-->
+<!--                console.log(data)-->
+<!--                alert(data);-->
+<!--            }-->
+<!--        })-->
+<!--    })-->
+
+<!--</script>-->

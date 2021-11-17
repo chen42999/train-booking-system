@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.css"
+          rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.js"></script>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="../static/plugins/bower_components/jquery/dist/jquery.min.js"
+            th:href="@{../static/plugins/bower_components/jquery/dist/jquery.min.js}"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../static/bootstrap/dist/js/bootstrap.min.js"
+            th:href="@{../static/bootstrap/dist/js/bootstrap.min.js}"></script>
+    <!-- Menu Plugin JavaScript -->
+    <script src="../static/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"
+            th:href="@{../static/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js}"></script>
+    <!--slimscroll JavaScript -->
+    <script src="../static/js/jquery.slimscroll.js" th:href="@{../static/js/jquery.slimscroll.js}"></script>
+    <!--Wave Effects -->
+    <script src="../static/js/waves.js" th:href="@{../static/js/waves.js}"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="../static/js/custom.min.js" th:href="@{../static/js/custom.min.js}"></script>
+</head>
+<body>
+<div class="container">
+
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">铁路售票系统</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- 我的信息 -->
+                    <li class="dropdown" sec:authorize="isAuthenticated()">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            <span sec:authentication="name"></span>
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/findUserTicketInfo}">我的火车票</a></li>
+                            <!--                            <li><a th:href="@{/userFindOrderInfo}">我的订单信息</a></li>-->
+                            <li role="separator" class="divider"></li>
+                            <!-- <li class="dropdown-header">Nav header</li> -->
+                            <li><a href="/toUserInfo">查看个人信息</a></li>
+                            <li><a href="/toRetrievePwd">找回密码</a></li>
+                            <li><a th:href="@{/logout}">注销</a></li>
+                        </ul>
+                    </li>
+                    <li sec:authorize="!isAuthenticated()"><a th:href="@{/toLogin}">游客</a></li>
+
+                    <li><a th:href="@{/toLogin}">登录</a></li>
+                    <li><a th:href="@{/toRegister}">注册</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+    </nav>
+
+    <!-- Main component for a primary marketing message or call to action -->
+    <div class="jumbotron">
+
+        <table class="table table-hover">
+            <tr>
+                <th>id</th>
+                <th>火车编号</th>
+                <th>车票编号</th>
+                <th>站点</th>
+                <th>发车时间</th>
+                <th>到站时间</th>
+                <th>用户名</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            <tr th:each="tickets: ${ticketList}">
+                <td th:text="${tickets.ticketId}"></td>
+                <td th:text="${tickets.train.trainNumber}"></td>
+                <td th:text="${tickets.ticketNumber}"></td>
+                <td>
+                    <span th:text="${tickets.train.roadMap.startStation}"></span>
+                    <span>---></span>
+                    <span th:text="${tickets.train.roadMap.endStation}"></span>
+                </td>
+                <td th:text="${#dates.format(tickets.train.startTime)}"></td>
+                <td th:text="${#dates.format(tickets.train.endTime)}"></td>
+                <td th:text="${tickets.users.username}"></td>
+                <td th:if="${tickets.state} eq 1">已购买</td>
+                <td th:if="${tickets.state} eq 2">已退票</td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                            data-target="#ticketChangingModal" th:data-ticketchangid="${tickets.ticketId}"
+                            th:if="${tickets.state != 2}">
+                        改签
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                            data-target="#updateTrainModal"
+                            th:if="${tickets.state eq 2}" disabled>
+                        改签
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                            data-target="#dishonourTrainModal"
+                            th:onclick="getDishonourTrainId([[${tickets.ticketId}]])"
+                            th:if="${tickets.state} != 2">
+                        退票
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                            data-target="#dishonourTrainModal"
+                            th:onclick="getDishonourTrainId([[${tickets.ticketId}]])"
+                            th:if="${tickets.state} eq 2" disabled>
+                        退票
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- 模态框--退票 -->
+<div class="modal fade" id="dishonourTrainModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel01">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel01">提示</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="dishonourTrainId">
+                <p>是否退票！！！</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="dishonourTrainBtn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 模态框--改签 -->
+<div class="modal fade" id="ticketChangingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel02">
+    <div class="modal-dialog" role="document">
+        <form action="/toTicketChang" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel02">提示</h4>
+                </div>
+                <div class="modal-body">
+                    <!--                <input type="text" name="trainId" id="trainId"/>-->
+                    <!--                <select id="allroadmap">-->
+                    <!--                    <option th:each="roadmaps: ${roadMapList}"-->
+                    <!--                            th:value="${roadmaps.id}" th:text="${roadmaps.id}"></option>-->
+                    <!--                </select>-->
+
+                    <input type="hidden" id="trainId" name="trainId"/>
+                    <p>是否改签!!!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary" id="ticketChangingBtn">确定</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+
+<script>
+    // 用于向模态框里传值
+    $('#ticketChangingModal').on('show.bs.modal', function (event) {
+        let btn = $(event.relatedTarget)
+        let tid = btn.data('ticketchangid')
+        console.log("tid: " + tid)
+        let modal = $(this)
+
+        $.ajax({
+            url: '/getTrainRoadMap',
+            data: {ticketId: tid},
+            dataType: 'json',
+            type: 'get',
+            contentType: 'application/json',
+            success: function (data) {
+                // modal.find(".modal-body #tid").val(data.id)
+                // modal.find(".modal-body #allroadmap option:selected").val(data.roadMap)
+                modal.find(".modal-body #trainId").val(data.id)
+                console.log(data)
+            },
+            error: function (data) {
+                console.log("错误")
+            }
+        })
+    })
+
+    // 在更新完用户操作后，查询全部用户并刷新
+    function flushOption() {
+        $.ajax({
+            url: '/admins/toUser',
+            success: function (msg) {
+                // 刷新页面
+                window.location.reload()
+            },
+            error: function (data) {
+                alert("错误")
+            }
+        })
+    }
+
+    // 获得要删除用户的id，模态框获得隐藏的id值
+    function getDishonourTrainId(id) {
+        $('#dishonourTrainId').val(id)
+    }
+
+    // 实现删除站点功能并把整个页面刷新
+    $('#dishonourTrainBtn').click(function () {
+        let id = $('#dishonourTrainId').val()
+        console.log(id)
+        $.ajax({
+            url: '/dishonourTrain',
+            data: {ticketId: id},
+            dataType: 'json',
+            success: function (data) {
+                if (data === 2) {
+                    alert("退票成功")
+                    flushOption()
+                    $('#dishonourTrainModal').modal('hide')
+                } else {
+                    alert("退票失败")
+                }
+            },
+            error: function () {
+                alert("错误")
+            }
+        })
+    })
+
+</script>
+</html>
